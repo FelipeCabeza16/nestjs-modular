@@ -6,7 +6,7 @@ import {
   ParseIntPipe,
   Put,
 } from '@nestjs/common';
-import { BrandsService } from './brand.service';
+import { BrandsService } from '../services/brand.service';
 import { UpdateBrandsDto } from '../dtos/brands.dtos';
 
 @Controller('brands')
