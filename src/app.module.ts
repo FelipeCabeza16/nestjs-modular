@@ -7,6 +7,12 @@ import { ProductsModule } from './products/products.module';
 @Module({
   imports: [UsersModule, ProductsModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: 'APP_NAME',
+      useValue: 'NestJS App',
+    },
+  ],
 })
 export class AppModule {}
