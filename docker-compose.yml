@@ -1,0 +1,29 @@
+version: '3.3'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+  pdadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'root@admin.com'
+      PGADMIN_DEFAULT_PASSWORD: 'admin'
+    ports:
+      - "5050:80"
+
+# sudo docker-compose up -d
+# sudo docker-compose up -d pdadmin
+# sudo docker-compose exec postgres psql -U postgres
+# sudo docker-compose exec postgres bash
+# psql -h localhost -d postgres -U postgres -p 5432
+# sudo docker inspect b9a5960705a9 | grep IPAddress
