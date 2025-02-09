@@ -1,7 +1,6 @@
 import { HttpModule, HttpService, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
-import { Client } from 'pg';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,19 +11,6 @@ import { DatabaseModule } from './database/database.module';
 import { environments } from './environments';
 import config from './config';
 
-const client = new Client({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'postgres',
-  password: 'postgres',
-  port: 5432,
-});
-
-client.connect();
-client.query('SELECT * FROM tasks', (err, res) => {
-  console.log(err, res);
-  client.end();
-});
 @Module({
   imports: [
     UsersModule,
