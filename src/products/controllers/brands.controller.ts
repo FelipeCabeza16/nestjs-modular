@@ -8,7 +8,9 @@ import {
 } from '@nestjs/common';
 import { BrandsService } from '../services/brand.service';
 import { UpdateBrandsDto } from '../dtos/brands.dtos';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('brands')
 @Controller('brands')
 export class BrandsController {
   constructor(private BrandsService: BrandsService) {}
