@@ -1,6 +1,7 @@
 import { Module, Global } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { Client } from 'pg';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import config from 'src/config';
 
 // client.query('SELECT * FROM tasks', (err, res) => {
@@ -10,6 +11,24 @@ import config from 'src/config';
 
 @Global()
 @Module({
+  imports: [
+    TypeOrmModule.forRootAsync({
+      inject: [config.KEY],
+      useFactory: (configService: ConfigType<typeof config>) => {
+        const { user, host, name, password, port } = configService.postgres;
+        return {
+          type: 'postgres',
+          host,
+          port,
+          username: user,
+          password,
+          database: name,
+          autoLoadEntities: true,
+          synchronize: true,
+        };
+      },
+    }),
+  ],
   providers: [
     {
       provide: 'APP_NAME',
