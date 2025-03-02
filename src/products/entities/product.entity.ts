@@ -4,9 +4,9 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 export class Product {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ length: 200, type: 'varchar', unique: true })
+  @Column({ type: 'varchar', unique: true })
   name: string;
-  @Column({ length: 200, type: 'text' })
+  @Column({ type: 'text' })
   description: string;
   @Column('float')
   price: number;
