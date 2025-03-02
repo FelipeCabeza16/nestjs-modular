@@ -4,10 +4,11 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Post,
   Put,
 } from '@nestjs/common';
 import { BrandsService } from '../services/brand.service';
-import { UpdateBrandsDto } from '../dtos/brands.dtos';
+import { CreateBrandsDto, UpdateBrandsDto } from '../dtos/brands.dtos';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('brands')
@@ -29,5 +30,9 @@ export class BrandsController {
     @Body() payload: UpdateBrandsDto,
   ) {
     return this.BrandsService.update(id, payload);
+  }
+  @Post()
+  create(@Body() payload: CreateBrandsDto) {
+    return this.BrandsService.create(payload);
   }
 }
