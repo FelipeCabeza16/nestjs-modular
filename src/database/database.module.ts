@@ -24,7 +24,7 @@ import config from 'src/config';
           password,
           database: name,
           autoLoadEntities: true,
-          synchronize: true,
+          synchronize: false,
         };
       },
     }),
