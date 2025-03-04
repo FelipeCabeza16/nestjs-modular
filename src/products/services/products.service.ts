@@ -6,12 +6,15 @@ import { CreateProductDto, UpdateProductDto } from '../dtos/products.dtos';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { BrandsService } from './brand.service';
+import { Category } from '../entities/category.entity';
+import { Brand } from 'src/users/entities/brand.entity';
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product) private productRepository: Repository<Product>,
-    private brandsService: BrandsService,
+    @InjectRepository(Brand) private brandRepository: Repository<Brand>,
+    @InjectRepository(Category)
+    private categoryRepository: Repository<Category>,
   ) {}
 
   findAll() {
@@ -34,10 +37,16 @@ export class ProductsService {
   async create(payload: CreateProductDto) {
     const newProduct = await this.productRepository.create(payload);
     if (payload.brandId) {
-      const brand = await this.brandsService.findOne(payload.brandId);
+      const brand = await this.brandRepository.findOne(payload.brandId);
       newProduct.brand = brand;
-      return this.productRepository.save(newProduct);
     }
+    if (payload.categoriesIds) {
+      newProduct.categories = await this.categoryRepository.findByIds(
+        payload.categoriesIds,
+      );
+    }
+
+    return this.productRepository.save(newProduct);
   }
 
   async update(id: number, payload: UpdateProductDto) {
@@ -46,7 +55,7 @@ export class ProductsService {
       throw new NotFoundException(`Product #${id} not found`);
     }
     if (payload.brandId) {
-      const brand = await this.brandsService.findOne(payload.brandId);
+      const brand = await this.brandRepository.findOne(payload.brandId);
       product.brand = brand;
     }
     this.productRepository.merge(await product, payload);
