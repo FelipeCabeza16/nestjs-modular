@@ -20,7 +20,9 @@ export class UsersController {
 
   @Get()
   findAll() {
-    return this.usersService.findAll();
+    return this.usersService.findAll({
+      relations: ['customer'],
+    });
   }
 
   @Get('tasks')

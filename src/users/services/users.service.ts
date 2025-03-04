@@ -8,17 +8,19 @@ import { ProductsService } from './../../products/services/products.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dtos';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CustomersService } from './customers.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private productsService: ProductsService,
     private configService: ConfigService,
+    private customerService: CustomersService,
     @Inject('PG') private client: Client,
     @InjectRepository(User) private usersRepository: Repository<User>,
   ) {}
 
-  findAll() {
+  findAll(p0: { relations: string[] }) {
     console.log(this.configService.get('API_KEY'));
     return this.usersRepository.find();
   }
@@ -31,8 +33,14 @@ export class UsersService {
     return user;
   }
 
-  create(data: CreateUserDto) {
+  async create(data: CreateUserDto) {
     const newUser = this.usersRepository.create(data);
+    if (data.customerId) {
+      const customer = await this.customerService.findOne(
+        Number(data.customerId),
+      );
+      newUser.customer = customer;
+    }
     return this.usersRepository.save(newUser);
   }
 
