@@ -1,50 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCustomersDto } from '../../users/dtos/customers.dtos';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Customer } from '../entities/customer.entity';
 
 @Injectable()
 export class CustomersService {
-  private counterId = 1;
-  private customers = [
-    {
-      id: 1,
-      name: 'Felipe',
-      lastName: 'Felipe Rojas',
-      phone: '123456789',
-    },
-  ];
+  constructor(
+    @InjectRepository(Customer)
+    private customerRepository: Repository<Customer>,
+  ) {}
 
-  findAll() {
-    return this.customers;
+  async findAll() {
+    return await this.customerRepository.find();
   }
 
   findOne(id: number) {
-    const customer = this.customers.find((item) => item.id === id);
-    return customer;
+    return this.customerRepository.findOne(id);
   }
 
   create(payload: CreateCustomersDto) {
-    this.counterId = this.counterId + 1;
-    const newCustomer = {
-      id: this.counterId,
-      ...payload,
-    };
-    this.customers.push(newCustomer);
-    return newCustomer;
+    const newCustomer = this.customerRepository.create(payload);
+    return this.customerRepository.save(newCustomer);
   }
 
-  update(id: number, payload: any) {
-    const customer = this.findOne(id);
-    const index = this.customers.findIndex((item) => item.id === id);
-    this.customers[index] = {
-      ...customer,
-      ...payload,
-    };
-    return this.customers[index];
+  async update(id: number, payload: any) {
+    const customer = this.customerRepository.findOne(id);
+    this.customerRepository.merge(await customer, payload);
+    return this.customerRepository.save(await customer);
   }
 
   remove(id: number) {
-    const index = this.customers.findIndex((item) => item.id === id);
-    this.customers.splice(index, 1);
-    return true;
+    return this.customerRepository.delete(id);
   }
 }

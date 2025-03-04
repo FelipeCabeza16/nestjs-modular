@@ -16,8 +16,8 @@ export class Product {
   image: string;
   @Column('boolean', { default: true })
   status: boolean;
-  @Column('timestamptz', { default: () => 'CURRENT_TIMESTAMP' })
+  @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
-  @Column('timestamptz', { default: () => 'CURRENT_TIMESTAMP' })
+  @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 }

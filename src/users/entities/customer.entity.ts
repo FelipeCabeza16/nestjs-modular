@@ -1,13 +1,27 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToOne,
+} from 'typeorm';
+import { User } from './user.entity';
 
 @Entity()
 export class Customer {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ length: 200, type: 'varchar' })
+  @Column({ type: 'varchar' })
   name: string;
-  @Column({ length: 200, type: 'varchar' })
+  @Column({ type: 'varchar' })
   lastName: string;
-  @Column({ length: 200, type: 'varchar', unique: true })
+  @Column({ type: 'varchar', unique: true })
   phone: string;
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  updatedAt: Date;
+  @OneToOne(() => User, (user) => user.customer)
+  user: User;
 }
