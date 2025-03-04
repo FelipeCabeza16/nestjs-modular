@@ -1,6 +1,14 @@
 import { Brand } from 'src/users/entities/brand.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  JoinTable,
+} from 'typeorm';
 
+import { Category } from './category.entity';
 @Entity()
 export class Product {
   @PrimaryGeneratedColumn()
@@ -23,4 +31,7 @@ export class Product {
   updatedAt: Date;
   @ManyToOne(() => Brand, (brand) => brand.products)
   brand: Brand;
+  @ManyToMany(() => Category, (category) => category.products)
+  @JoinTable()
+  categories: Category[];
 }
