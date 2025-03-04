@@ -10,11 +10,16 @@ export class BrandsService {
     @InjectRepository(Brand) private brandRepository: Repository<Brand>,
   ) {}
   findAll() {
-    return this.brandRepository.find();
+    return this.brandRepository.find({
+      relations: ['products'],
+    });
   }
 
   async findOne(id: number) {
-    const brand = await this.brandRepository.findOne(id);
+    const brand = await this.brandRepository.findOne({
+      where: { id },
+      relations: ['products'],
+    });
     return brand;
   }
 
