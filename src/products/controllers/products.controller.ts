@@ -54,6 +54,14 @@ export class ProductsController {
     return this.productsService.create(payload);
   }
 
+  @Put(':id/category/:categoryId')
+  addCategoryToProduct(
+    @Param('id') id: string,
+    @Param('categoryId') categoryId: string,
+  ) {
+    return this.productsService.addCategoryByProduct(+id, +categoryId);
+  }
+
   @Put(':id')
   update(@Param('id') id: string, @Body() payload: UpdateProductDto) {
     return this.productsService.update(+id, payload);
@@ -62,5 +70,13 @@ export class ProductsController {
   @Delete(':id')
   delete(@Param('id') id: string) {
     return this.productsService.remove(+id);
+  }
+
+  @Delete(':id/category/:categoryId')
+  deleteCategory(
+    @Param('id') id: string,
+    @Param('categoryId') categoryId: string,
+  ) {
+    return this.productsService.removeCategoryByProduct(+id, +categoryId);
   }
 }
