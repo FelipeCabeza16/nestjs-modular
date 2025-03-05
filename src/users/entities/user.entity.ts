@@ -34,6 +34,8 @@ export class User {
     nullable: true,
     eager: true,
   })
-  @JoinColumn()
+  @JoinColumn({
+    name: 'customer_id',
+  })
   customer: Customer;
 }

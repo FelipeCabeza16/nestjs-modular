@@ -6,10 +6,11 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   JoinTable,
+  JoinColumn,
 } from 'typeorm';
 
 import { Category } from './category.entity';
-@Entity()
+@Entity({ name: 'products' })
 export class Product {
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,13 +26,24 @@ export class Product {
   image: string;
   @Column('boolean', { default: true })
   status: boolean;
-  @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
+  @Column('timestamp', {
+    default: () => 'CURRENT_TIMESTAMP',
+    name: 'created_at',
+  })
   createdAt: Date;
-  @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
+  @Column('timestamp', {
+    default: () => 'CURRENT_TIMESTAMP',
+    name: 'updated_at',
+  })
   updatedAt: Date;
   @ManyToOne(() => Brand, (brand) => brand.products)
+  @JoinColumn({ name: 'brand_id' })
   brand: Brand;
   @ManyToMany(() => Category, (category) => category.products)
-  @JoinTable()
+  @JoinTable({
+    name: 'products_categories',
+    joinColumn: { name: 'product_id' },
+    inverseJoinColumn: { name: 'category_id' },
+  })
   categories: Category[];
 }
