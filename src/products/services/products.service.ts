@@ -2,7 +2,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { Product } from '../entities/product.entity';
-import { CreateProductDto, UpdateProductDto } from '../dtos/products.dtos';
+import { CreateProductDto, FilterProductsDto, UpdateProductDto } from '../dtos/products.dtos';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -17,7 +17,15 @@ export class ProductsService {
     private categoryRepository: Repository<Category>,
   ) {}
 
-  findAll() {
+  findAll(params?: FilterProductsDto) {
+    if (params) {
+      const { limit, offset } = params;
+      return this.productRepository.find({
+        relations: ['brand', 'categories'],
+        take: limit,
+        skip: offset,
+      });
+    }
     return this.productRepository.find({
       relations: ['brand', 'categories'],
     });
