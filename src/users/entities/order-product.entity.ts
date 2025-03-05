@@ -14,12 +14,6 @@ export class OrderItem {
   @PrimaryGeneratedColumn()
   id: number;
   @Column({ type: 'varchar' })
-  name: string;
-  @Column({ type: 'varchar' })
-  description: string;
-  @Column({ type: 'decimal' })
-  price: number;
-  @Column({ type: 'int' })
   quantity: number;
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
