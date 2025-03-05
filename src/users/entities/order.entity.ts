@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Customer } from './customer.entity';
 import { OrderItem } from './order-product.entity';
+import { Expose } from 'class-transformer';
 
 @Entity()
 export class Order {
@@ -25,4 +26,12 @@ export class Order {
   customer: Customer;
   @OneToMany(() => OrderItem, (orderItem) => orderItem.order)
   items: OrderItem[];
+
+  @Expose()
+  get total(): number {
+    return this.items.reduce(
+      (sum, item) => sum + item.quantity * item.product.price,
+      0,
+    );
+  }
 }

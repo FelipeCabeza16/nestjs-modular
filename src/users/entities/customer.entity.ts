@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { Order } from './order.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Customer {
@@ -21,8 +22,10 @@ export class Customer {
   @Column({ type: 'varchar', unique: true })
   phone: string;
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Exclude()
   createdAt: Date;
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Exclude()
   updatedAt: Date;
   @OneToOne(() => User, (user) => user.customer)
   user: User;

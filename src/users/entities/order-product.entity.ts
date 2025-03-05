@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Order } from './order.entity';
 import { Product } from 'src/products/entities/product.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class OrderItem {
@@ -16,8 +17,10 @@ export class OrderItem {
   @Column({ type: 'varchar' })
   quantity: number;
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Exclude()
   createdAt: Date;
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Exclude()
   updatedAt: Date;
   @ManyToOne(() => Product)
   product: Product;
