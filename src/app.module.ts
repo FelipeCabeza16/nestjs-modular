@@ -9,7 +9,9 @@ import { ProductsModule } from './products/products.module';
 import { DatabaseModule } from './database/database.module';
 
 import { environments } from './environments';
+import { AuthService } from './auth/services/auth.service';
 import config from './config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import config from './config';
     ProductsModule,
     HttpModule,
     DatabaseModule,
+    AuthModule,
     ConfigModule.forRoot({
       envFilePath: environments[process.env.NODE_ENV] || '.env', // 👈
       load: [config], // 👈
@@ -49,6 +52,7 @@ import config from './config';
       },
       inject: [HttpService],
     },
+    AuthService,
   ],
 })
 export class AppModule {}
