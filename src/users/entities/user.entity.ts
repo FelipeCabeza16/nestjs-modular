@@ -8,6 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Customer } from './customer.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -16,6 +17,7 @@ export class User {
   @Column({ type: 'varchar', unique: true })
   email: string;
   @Column({ type: 'text' })
+  @Exclude()
   password: string;
   @Column({ type: 'varchar' })
   role: string;
@@ -29,13 +31,7 @@ export class User {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
-  @OneToOne(() => Customer, (customer) => customer.user, {
-    cascade: true,
-    nullable: true,
-    eager: true,
-  })
-  @JoinColumn({
-    name: 'customer_id',
-  })
+  @OneToOne(() => Customer, (customer) => customer.user, { nullable: true })
+  @JoinColumn({ name: 'customer_id' })
   customer: Customer;
 }

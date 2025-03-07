@@ -3,12 +3,13 @@ import { Client } from 'pg';
 import { ConfigService } from '@nestjs/config';
 
 import { User } from '../entities/user.entity';
-
+import * as bcrypt from 'bcrypt';
 import { ProductsService } from './../../products/services/products.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dtos';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CustomersService } from './customers.service';
+
 
 @Injectable()
 export class UsersService {
@@ -33,8 +34,14 @@ export class UsersService {
     return user;
   }
 
+  findByEmail(email: string) {
+    return this.usersRepository.findOne({ where: { email } });
+  }
+
   async create(data: CreateUserDto) {
     const newUser = this.usersRepository.create(data);
+    const hashPassword = await bcrypt.hash(newUser.password, 10);
+    newUser.password = hashPassword;
     if (data.customerId) {
       const customer = await this.customerService.findOne(
         Number(data.customerId),
