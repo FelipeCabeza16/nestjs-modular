@@ -23,4 +23,5 @@ export default registerAs('config', () => ({
     password: process.env.MYSQL_PASSWORD,
   },
   apiKey: process.env.API_KEY,
+  jwtSecret: process.env.JWT_SECRET,
 }));
