@@ -22,7 +22,7 @@ import config from './config';
       load: [config], // 👈
       isGlobal: true,
       validationSchema: Joi.object({
-        API_KEY: Joi.number().required(),
+        API_KEY: Joi.string().required(),
         DATABASE_NAME: Joi.string().required(),
         DATABASE_PORT: Joi.number().required(),
         DATABASE_HOST: Joi.string().required(),
